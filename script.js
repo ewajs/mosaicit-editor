@@ -65,8 +65,14 @@ document.getElementById('share').addEventListener('click', () => {
     
 
     // If device has sharing enabled, we trigger native share
-    if (navigator.canShare && navigator.canShare(shareData)) {
+    if (navigator.canShare) {
         domtoimage.toBlob(document.querySelector('table')).then(function (blob) {
+            console.log("Sharing!", {
+                title: "Mosaic.it Designer",
+                text: "Encargá tu propio diseño!",
+                files: [new File([blob], "mosaicit.png", {type: blob.type,})],
+                url: window.location.href,
+            });
             navigator.share({
                 title: "Mosaic.it Designer",
                 text: "Encargá tu propio diseño!",
