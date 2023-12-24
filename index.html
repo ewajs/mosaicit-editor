@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosaic.it</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.12.0/cdn/themes/light.css" />
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.12.0/cdn/shoelace-autoloader.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="col">
+            <sl-details summary="Generar" open id="generatePanel">
+                <h2>Dimensiones</h2>
+                <div class="container inputs">
+                    <sl-input id="height" label="Alto" type="number" help-text="En venecitas" value="10"></sl-input>
+                    <sl-input id="width" label="Ancho" type="number" help-text="En venecitas" value="10"></sl-input>
+                </div>
+                <h2>Color de Fondo</h2>
+                <div class="color-selector" id="defaultColor">
+                    <div class="option selected" data-color="#FFFFFF"></div>
+                    <div class="option" data-color="#000000"></div>
+                    <div class="option" data-color="#7a0404"></div>
+                    <div class="option" data-color="#170587"></div>
+                    <div class="option" data-color="#00591c"></div>
+                    <div class="option" data-color="#fafa00"></div>
+                    <div class="option" data-color="#bfb295"></div>
+                    <div class="option" data-color="#56009c"></div>
+                </div>
+                <h2>Color Pastina</h2>
+                <div class="color-selector" id="glueColor">
+                    <div class="option" data-color="#FFFFFF"></div>
+                    <div class="option selected" data-color="#f7ecdc"></div>
+                    <div class="option" data-color="#70624c"></div>
+                    <div class="option" data-color="#000000"></div>
+                </div>
+                <sl-button id="generate">Generar</sl-button>
+            </sl-details>
+            <sl-details summary="Editar" id="editPanel">
+                <h2>Color</h2>
+                <div class="color-selector" id="color">
+                    <div class="option selected" data-color="#FFFFFF"></div>
+                    <div class="option" data-color="#000000"></div>
+                    <div class="option" data-color="#7a0404"></div>
+                    <div class="option" data-color="#170587"></div>
+                    <div class="option" data-color="#00591c"></div>
+                    <div class="option" data-color="#fafa00"></div>
+                    <div class="option" data-color="#bfb295"></div>
+                    <div class="option" data-color="#56009c"></div>
+                </div>
+                <sl-button id="share">Compartir</sl-button>
+            </sl-details>
+        </div>
+        <div class="col table-container"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js" integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

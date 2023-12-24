@@ -1,0 +1,134 @@
+body {
+    font-family: sans-serif;
+    background-color: #f0ebe5;
+}
+
+h1 {
+    font-size: 18px;
+}
+
+h2 {
+    font-size: 14px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+@media screen and (max-width: 930px) {
+    .container {
+        flex-direction: column;
+    }
+    .container > .col {
+        width: 100%;
+    }
+
+    .container > .col.table-container {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+.container.inputs {
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+sl-details::part(header) {
+    background-color: #f0ebe5;
+    font-weight: bold;
+}
+
+sl-details::part(content) {
+    background-color: #f0ebe5;
+}
+
+
+sl-button::part(base) {
+    margin: 20px 10px;
+    background-color: #68594a;
+    color:#f5f0ec;
+    font-weight: bold;
+    border-color: #68594a;
+}
+
+sl-button::part(base):hover {
+    border-color: #68594a;
+}
+
+sl-input::part(input) {
+    background-color: #f5f0ec;
+}
+
+sl-input::part(form-control-label) {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.container.inputs sl-input {
+    width: 48%;
+}
+
+.col {
+    width: 30%;
+}
+
+.col.table-container {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+}
+
+.table-container > table {
+    border-spacing: 0;
+    height: fit-content;
+}
+
+.table-container > table > tr > td {
+    width: 20px;
+    height: 20px;
+    border: 3px solid black;
+}
+
+.color-selector {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.color-selector > h2 {
+    width: 100%;
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.color-selector > .option {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.color-selector > .option.selected {
+    border: 3px solid #68594a;
+    position: relative;
+}
+
+.color-selector > .option.selected::after {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #68594a;
+    position: absolute;
+    content: '✓';
+    color: white;
+    right: -10px;
+    top: -10px;
+    z-index: 1000;
+}
