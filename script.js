@@ -47,7 +47,7 @@ function generate() {
                 if (!clicked) return;
                 td.style.backgroundColor = colorInput.dataset.value;
             })
-            td.addEventListener('touchmove', () => td.style.backgroundColor = colorInput.dataset.value)
+            td.addEventListener('touchstart', () => td.style.backgroundColor = colorInput.dataset.value)
             tr.appendChild(td);
         }
         table.appendChild(tr);
