@@ -89,7 +89,7 @@ document.getElementById('share').addEventListener('click', () => {
 })
 
 const imageUpload = document.getElementById('imageUpload');
-let activeCanvas, currentPixelData, currentGlueColor;
+let activeCanvas, currentPixelData, currentGlueColor = "#f7ecdc";
 
 document.getElementById('upload').addEventListener('click', () => {
     imageUpload.click();

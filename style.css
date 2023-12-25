@@ -182,6 +182,10 @@ sl-range {
 
 
 @media screen and (max-width: 930px) {
+    .swal2-modal { 
+        width: 95%;
+    }
+
     .swal2-modal sl-image-comparer > img {
         width: 100%;
     }
