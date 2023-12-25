@@ -72,9 +72,7 @@ document.getElementById('share').addEventListener('click', () => {
         domtoimage.toBlob(document.querySelector('table')).then(function (blob) {
             navigator.share({
                 title: "Mosaic.it Designer",
-                text: "Encargá tu propio diseño!",
                 files: [new File([blob], "mosaicit.png", {type: blob.type,})],
-                url: window.location.href,
             });
         });
         
@@ -92,7 +90,7 @@ document.getElementById('share').addEventListener('click', () => {
 })
 
 const imageUpload = document.getElementById('imageUpload');
-let activeCanvas;
+let activeCanvas, currentPixelData, currentGlueColor;
 
 document.getElementById('upload').addEventListener('click', () => {
     imageUpload.click();
@@ -107,40 +105,50 @@ imageUpload.addEventListener('change', function(e) {
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          const originalCanvas = normalizeImage(img);
-          activeCanvas = originalCanvas;
-          const pixelatedCanvas = pixelateImage(originalCanvas);
-          const html = `
-          <sl-image-comparer>
-            <img src="${originalCanvas.toDataURL()}" slot="before" />
-            <img src="${pixelatedCanvas.toDataURL()}" slot="after" />
-          </sl-image-comparer>
-          <h2>Color Pastina</h2>
-          <div class="color-selector" id="glueColor">
-              <div class="option" data-color="#FFFFFF"></div>
-              <div class="option selected" data-color="#f7ecdc"></div>
-              <div class="option" data-color="#70624c"></div>
-              <div class="option" data-color="#000000"></div>
-          </div>
-          <sl-range label="Pixelado" help-text="Píxeles por venecita" min="5" max="100"></sl-range>
-          `;
-          Swal.fire({
-            title: "Configurar",
-            html,
-            didOpen(el) {
-                const afterImage = el.querySelector('sl-image-comparer img[slot="after"]');
-                const glueColorSelector = el.querySelector('.color-selector');
-                const pixelationRatio = el.querySelector('sl-range');
-                configureColorSelector(glueColorSelector);
-                const refreshCanvas = () => {
-                    const newPixelatedCanvas = pixelateImage(activeCanvas, pixelationRatio.value, glueColorSelector.dataset.value);
-                    afterImage.src = newPixelatedCanvas.toDataURL();
-                };
+            const originalCanvas = normalizeImage(img);
+            activeCanvas = originalCanvas;
+            const pixelatedCanvas = pixelateImage(originalCanvas);
+            const html = `
+            <sl-image-comparer>
+                <img src="${originalCanvas.toDataURL()}" slot="before" />
+                <img src="${pixelatedCanvas.toDataURL()}" slot="after" />
+            </sl-image-comparer>
+            <div class="controls">
+                <div class="glue">
+                    <h2>Color Pastina</h2>
+                    <div class="color-selector" id="glueColor">
+                        <div class="option" data-color="#FFFFFF"></div>
+                        <div class="option selected" data-color="#f7ecdc"></div>
+                        <div class="option" data-color="#70624c"></div>
+                        <div class="option" data-color="#000000"></div>
+                    </div>
+                </div>
+                <sl-range label="Pixelado" help-text="Píxeles por venecita" min="10" value="25" max="100"></sl-range>
+            </div>
+            `;
+            Swal.fire({
+                title: "Configurar",
+                html,
+                confirmButtonColor: "#68594a",
+                didOpen(el) {
+                    const afterImage = el.querySelector('sl-image-comparer img[slot="after"]');
+                    const glueColorSelector = el.querySelector('.color-selector');
+                    const pixelationRatio = el.querySelector('sl-range');
+                    configureColorSelector(glueColorSelector);
+                    const refreshCanvas = () => {
+                        currentGlueColor = glueColorSelector.dataset.value;
+                        const newPixelatedCanvas = pixelateImage(activeCanvas, pixelationRatio.value, glueColorSelector.dataset.value);
+                        afterImage.src = newPixelatedCanvas.toDataURL();
+                    };
 
-                glueColorSelector.addEventListener('click', refreshCanvas);
-                pixelationRatio.addEventListener('sl-change', refreshCanvas);
-            }
-          });
+                    glueColorSelector.addEventListener('click', refreshCanvas);
+                    pixelationRatio.addEventListener('sl-change', refreshCanvas);
+                }
+            }).then(result => {
+                console.log(currentPixelData);
+                imageToTable(currentPixelData, currentGlueColor);
+                editPanel.show()
+            });
         };
         img.src = e.target.result;
       };
@@ -170,7 +178,7 @@ function normalizeImage(originalImage, heightPixels = 500) {
    
 }
 
-function pixelateImage(originalCanvas, pixelationFactor = 5, glueColor = "#f7ecdc") {
+function pixelateImage(originalCanvas, pixelationFactor = 25, glueColor = "#f7ecdc") {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext("2d");
     canvas.width = originalCanvas.width;
@@ -179,28 +187,56 @@ function pixelateImage(originalCanvas, pixelationFactor = 5, glueColor = "#f7ecd
     const originalImageData = originalCanvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
     
     // We need to reserve 10% or at least 1 px for the glue
-    const glueSize = Math.max(1, parseInt(pixelationFactor * 0.1));
-
+    const glueSize = Math.max(1, parseInt(pixelationFactor * 0.15));
+    let i = 0, j = 0;
     if (pixelationFactor !== 0) {
-      for (let y = 0; y < canvas.height; y += pixelationFactor) {
-        for (let x = 0; x < canvas.width; x += pixelationFactor) {
-            // extracting the position of the sample pixel
-            const pixelIndexPosition = (x + y * canvas.width) * 4;
-            // First we draw a full square with glue color 
-            context.fillStyle = glueColor;
-            context.fillRect(x, y, pixelationFactor, pixelationFactor);
-            // Now we draw an inner square leaving glueSize from below visible
-            // drawing a square replacing the current pixels
-            context.fillStyle = `rgba(
-                ${originalImageData[pixelIndexPosition]},
-                ${originalImageData[pixelIndexPosition + 1]},
-                ${originalImageData[pixelIndexPosition + 2]},
-                ${originalImageData[pixelIndexPosition + 3]}
-            )`;
-            context.fillRect(x + glueSize, y + glueSize, pixelationFactor - glueSize, pixelationFactor - glueSize);
+        currentPixelData = []
+        for (let y = 0; y < canvas.height; y += pixelationFactor) {
+            currentPixelData[i] = [];
+            j = 0;
+            for (let x = 0; x < canvas.width; x += pixelationFactor) {
+                // extracting the position of the sample pixel
+                const pixelIndexPosition = (x + y * canvas.width) * 4;
+                // First we draw a full square with glue color 
+                context.fillStyle = glueColor;
+                context.fillRect(x, y, pixelationFactor, pixelationFactor);
+                // Now we draw an inner square leaving glueSize from below visible
+                // drawing a square replacing the current pixels
+                const currentPixel = `rgba(
+                    ${originalImageData[pixelIndexPosition]},
+                    ${originalImageData[pixelIndexPosition + 1]},
+                    ${originalImageData[pixelIndexPosition + 2]},
+                    ${originalImageData[pixelIndexPosition + 3]}
+                )`;
+                currentPixelData[i][j] = currentPixel;
+                context.fillStyle = currentPixel;
+                context.fillRect(x + glueSize, y + glueSize, pixelationFactor - glueSize, pixelationFactor - glueSize);
+                j++;
+            }
+            i++;
         }
-      }
     }
 
     return canvas;
+}
+
+function imageToTable(pixelData, glueColor) {
+    tableContainer.innerHTML = '';
+    const table = document.createElement('table');
+    for (let i = 0; i < pixelData.length; i++) {
+        const tr = document.createElement('tr');
+        for (let j = 0; j < pixelData[i].length; j++) {
+            const td = document.createElement('td')
+            td.style.backgroundColor = pixelData[i][j];
+            td.style.borderColor = glueColor;
+            td.addEventListener('mouseover', () => {
+                if (!clicked) return;
+                td.style.backgroundColor = colorInput.dataset.value;
+            })
+            td.addEventListener('touchstart', () => td.style.backgroundColor = colorInput.dataset.value)
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    tableContainer.appendChild(table);
 }

@@ -143,3 +143,59 @@ input[type="file"] {
     width: 80%;
     background-color: #f0ebe5;
 }
+
+.swal2-modal .controls {
+    display: flex;
+    justify-content: center;
+}
+
+.swal2-modal .controls .glue,
+.swal2-modal .controls sl-range {
+    width: 40%;
+}
+
+.swal2-modal .controls .glue > h2{
+    text-align: left;
+}
+
+
+.swal2-modal .controls sl-range::part(form-control) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.swal2-modal .controls sl-range::part(form-control-label) {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+
+sl-range {
+    --track-color-active: #68594a;
+    --track-color-inactive: #f5f0ec;
+    --sl-color-primary-600: #68594a; 
+    --sl-color-primary-500: #68594a;
+}
+
+
+@media screen and (max-width: 930px) {
+    .swal2-modal sl-image-comparer > img {
+        width: 100%;
+    }
+
+    .swal2-modal .controls {
+        flex-direction: column;
+    }
+
+    .swal2-modal .controls .glue,
+    .swal2-modal .controls sl-range {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+    
+    
+
+}
