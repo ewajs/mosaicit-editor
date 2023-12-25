@@ -71,7 +71,6 @@ document.getElementById('share').addEventListener('click', () => {
     if (navigator.canShare) {
         domtoimage.toBlob(document.querySelector('table')).then(function (blob) {
             navigator.share({
-                title: "Mosaic.it Designer",
                 files: [new File([blob], "mosaicit.png", {type: blob.type,})],
             });
         });
