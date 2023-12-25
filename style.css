@@ -67,6 +67,10 @@ sl-input::part(form-control-label) {
     font-weight: bold;
 }
 
+input[type="file"] {
+    display: none;
+}
+
 .container.inputs sl-input {
     width: 48%;
 }
@@ -131,4 +135,11 @@ sl-input::part(form-control-label) {
     right: -10px;
     top: -10px;
     z-index: 1000;
+}
+
+/* Image Modal */
+
+.swal2-modal {
+    width: 80%;
+    background-color: #f0ebe5;
 }

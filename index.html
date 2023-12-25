@@ -36,6 +36,8 @@
                     <div class="option" data-color="#000000"></div>
                 </div>
                 <sl-button id="generate">Generar</sl-button>
+                <sl-button id="upload">Subir imagen</sl-button>
+                <input type="file" id="imageUpload" name="image" accept=".jpg, .jpeg, .png">
             </sl-details>
             <sl-details summary="Editar" id="editPanel">
                 <h2>Color</h2>
@@ -55,6 +57,7 @@
         <div class="col table-container"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js" integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./script.js"></script>
 </body>
 </html>
