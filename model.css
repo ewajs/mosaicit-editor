@@ -72,6 +72,12 @@ model-viewer > button.ar-button {
     margin-right: 10px;
 }
 
+#info > .bi,
+#help > .bi,
+#share > .bi {
+    margin: 0;
+}
+
 
 /* QR Modal */
 #qr-code {
@@ -147,6 +153,7 @@ model-viewer > button.ar-button {
 
 .swal2-container.share-modal > .swal2-modal .share-container .share-link > a {
     color: #68594a;
+    color: #e4ddd7;
 }
 
 .swal2-container.share-modal > .swal2-modal .share-container .share-link > .bi {
