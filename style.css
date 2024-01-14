@@ -46,7 +46,7 @@ sl-details::part(content) {
 }
 
 
-sl-button::part(base) {
+sl-button.btn::part(base) {
     margin: 20px 10px;
     background-color: #68594a;
     color:#f5f0ec;
@@ -54,7 +54,7 @@ sl-button::part(base) {
     border-color: #68594a;
 }
 
-sl-button::part(base):hover {
+sl-button.btn::part(base):hover {
     border-color: #68594a;
 }
 
