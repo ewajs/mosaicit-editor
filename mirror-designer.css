@@ -75,10 +75,15 @@ h4 {
     align-items: center;
 }
 
-.pattern > .form-control.form-control-color {
+.pattern > .colors {
+    display: flex;
+}
+
+.pattern > .colors > .form-control.form-control-color {
     display: inline-block;
     height: 40px;
     width: 40px;
+    margin-right: 5px;
 }
 
 .btn.btn-mosaicit.remove-row,
@@ -101,6 +106,44 @@ span.units {
     color: #9e8974;
 }
 
+.mirror-row hr {
+    margin: 5px 0;
+}
+
 .mirror-row .form-label {
     font-size: 12px;
+}
+
+.length-input {
+    flex-direction: column;
+}
+
+.length-input > .length-label {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.length-input > .length-control {
+    display: flex;
+    align-items: center;
+}
+
+.length-input > .length-control > .length-value {
+    padding: 5px 15px;
+    text-align: center;
+    background-color: #fdfaf7;
+    border-radius: 5px;
+    width: 50px;
+}
+
+.length-input .length-input-control {
+    border-radius: 50%;
+    margin: 0 5px;
+    padding: 0;
+    font-size: 20px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

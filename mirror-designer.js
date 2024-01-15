@@ -1,5 +1,7 @@
 // Initialize Fabric.js canvas
 const canvas = new fabric.Canvas('canvas');
+const glueColorInput = document.querySelector('#glueColor');
+const mirrorDiameter = document.querySelector('.length-input.mirror-diameter');
 // Subtract 10px margin on both sides
 const availableWidth = document.querySelector('.mirror-container').clientWidth - 20;
 canvas.setHeight(availableWidth);
@@ -7,19 +9,126 @@ canvas.setWidth(availableWidth);
 
 let totalRows = 0;
 
-draw({
-    mirrorRadius: 200, 
-    rows: [{type: "square", size: 20, gap: 5, pattern: ["#68594a"]}], 
-    glueColor: '#f7ecdc'}
-);
-addRow('rectangleRow');
+function configureLengthInput(el) {
+    const lengthValue = el.querySelector('.length-value');
+    el.querySelectorAll('.length-input-control').forEach(c => c.addEventListener('click', () => {
+        const currentValue = parseInt(el.dataset.value);
+        const max = parseInt(el.dataset.max);
+        const min = parseInt(el.dataset.min);
+        const step = parseInt(c.dataset.step);
+        const nextValue = currentValue + step;
+        console.log(nextValue)
+        if (nextValue > max || nextValue < min) return;
+        el.dataset.value = nextValue;
+        lengthValue.innerText = nextValue;
+        document.dispatchEvent(new Event('mirror_changed'))
+    }));
+}
+
+document.querySelectorAll('.length-input').forEach(configureLengthInput);
+
+// Glue color input configured separately from the rest
+glueColorInput.addEventListener('change', () => document.dispatchEvent(new Event('mirror_changed')));
+
+function configureColorInput(el) {
+    el.type = "color";
+    el.value = "#68594a";
+    el.classList.add("form-control", "form-control-color");
+    el.addEventListener('change', () => document.dispatchEvent(new Event('mirror_changed')));
+}
+
+function reindexRows() {
+    totalRows = 0;
+    document.querySelector('.mirror-rows').querySelectorAll('.mirror-row').forEach((el, idx) => {
+        el.dataset.index = idx + 1;
+        el.querySelector('.row-number').innerText = idx + 1;
+        totalRows++;
+    });
+}
 
 function addRow(kind) {
+    const rowParent = document.querySelector('.mirror-rows');
     const newRow = document.getElementById(kind).content.cloneNode(true);
-    // Set Row number 
-    newRow.querySelector('.row-number').innerText = totalRows + 1;
-    document.querySelector('.mirror-rows').appendChild(newRow);
+    // Set Row number
+    const idx = totalRows + 1;
+    newRow.querySelector('.mirror-row').dataset.index = idx;
+    newRow.querySelector('.row-number').innerText = idx;
+    newRow.querySelectorAll('.length-input').forEach(configureLengthInput);
+    newRow.querySelector('.remove-row').addEventListener('click', () => {
+        rowParent.removeChild(rowParent.querySelector(`.mirror-row[data-index="${idx}"]`));
+        reindexRows();
+    });
+    // Row might not have colorInput
+    const colorInput = newRow.querySelector('.pattern > .colors > .form-control-color')
+    if (colorInput) {
+        const colorContainer = colorInput.parentElement;
+        Sortable.create(colorContainer);
+        configureColorInput(colorInput);
+        // Now configure the add delete if this row allows colors
+        newRow.querySelector('.add-color').addEventListener('click', () => {
+            const newColorInput = document.createElement('input');
+            configureColorInput(newColorInput);
+            colorContainer.appendChild(newColorInput);
+            document.dispatchEvent(new Event('mirror_changed'))
+        })
+
+        newRow.querySelector('.remove-color').addEventListener('click', () => {
+            if(colorContainer.querySelectorAll('.form-control-color').length < 2) return; // Always leave 1 color
+            colorContainer.removeChild(colorContainer.querySelector(".form-control-color:last-child"));
+            document.dispatchEvent(new Event('mirror_changed'))
+        })
+    }
+    rowParent.appendChild(newRow);
+   
     totalRows++;
+    document.dispatchEvent(new Event('mirror_changed'))
+}
+
+document.querySelectorAll('.new-row').forEach(e => e.addEventListener('click', () => addRow(e.dataset.template)));
+
+function getMirrorData() {
+    // To cm
+    const mirrorRadius = parseInt(mirrorDiameter.dataset.value) * 10;
+    const glueColor = glueColorInput.value;
+    const rows = [];
+    document.querySelectorAll(".mirror-rows > .mirror-row").forEach(r => {
+        const pattern = [];
+        r.querySelectorAll('.pattern > .colors > .form-control-color').forEach(c => pattern.push(c.value));
+        switch(r.dataset.row) {
+            case "square":
+                rows.push({
+                    type: "square", 
+                    size: parseInt(r.querySelector('.length-input.size').dataset.value),
+                    gap: parseInt(r.querySelector('.length-input.gap').dataset.value),
+                    pattern,
+                });
+                break;
+            case "rectangle":
+                rows.push({
+                    type: "rectangle", 
+                    height: parseInt(r.querySelector('.length-input.height').dataset.value),
+                    width: parseInt(r.querySelector('.length-input.width').dataset.value),
+                    gap: parseInt(r.querySelector('.length-input.gap').dataset.value),
+                    pattern,
+                });
+                break;
+            case "circle":
+                rows.push({
+                    type: "circle", 
+                    radius: parseInt(r.querySelector('.length-input.diameter').dataset.value) / 2,
+                    gap: parseInt(r.querySelector('.length-input.gap').dataset.value),
+                    pattern,
+                });
+                break;
+            case "gap":
+                rows.push({
+                    type: "gap", 
+                    gap: parseInt(r.querySelector('.length-input.gap').dataset.value),
+                });
+                break;
+        }
+    });
+    return {mirrorRadius, glueColor, rows};
 }
 
 function draw(mirrorData) {
@@ -126,3 +235,7 @@ function drawCirclesRow(radius, pattern, gap, circleRadius) {
     }
 }
 
+// Init
+addRow('squareRow');
+draw(getMirrorData());
+document.addEventListener('mirror_changed', () => draw(getMirrorData()));

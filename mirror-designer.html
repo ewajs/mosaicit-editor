@@ -20,9 +20,13 @@
                     </div>
                     <div class="col my-1">
                         <div class="row align-items-center mb-1">
-                            <div for="radius" class="form-label col-3">Radio (cm)</label>
-                            <div class="col-3">
-                                <input id="radius"  type="number" placeholder="20" class="form-control" value="20"></input>
+                            <div class="col-6 d-flex length-input mirror-diameter" data-min="10" data-max="80" data-value="20">
+                                <div class="length-label">Diámetro (cm)</div>
+                                <div class="length-control">
+                                    <div class="length-value">20</div>
+                                    <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                                    <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                                </div>
                             </div>
                             <label for="glueColor" class="form-label col-3">Pastina</label>
                             <div class="col-3">
@@ -30,23 +34,21 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
                 </div>
                 <div class="row">
                     <div class="col-8">
                         <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Agregar fila
                             </button>
                             <ul class="dropdown-menu dropdown-menu-mosaicit" id="add">
                                 <li><h6 class="dropdown-header">Venecitas</h6></li>
-                                <li><a class="dropdown-item" href="#" id="compare"><span>Cuadradas</span></a></li>
-                                <li><a class="dropdown-item" href="#" id="compare"><span>Rectangulares</span></a></li>
-                                <li><a class="dropdown-item" href="#" id="compare"><span>Circulares</span></a></li>
+                                <li><a class="dropdown-item new-row" data-template="squareRow" href="#" id="newSquareRow"><span>Cuadradas</span></a></li>
+                                <li><a class="dropdown-item new-row" data-template="rectangleRow" href="#" id="newRectangleRow"><span>Rectangulares</span></a></li>
+                                <li><a class="dropdown-item new-row" data-template="circleRow" href="#" id="newCircleRow"><span>Circulares</span></a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Pastina</h6></li>
-                                <li><a class="dropdown-item" href="#" id="axialTilt"><span>Pastina (fila vacía)</span></a></li>
+                                <li><a class="dropdown-item new-row" data-template="gapRow" href="#" id="newGap"><span>Pastina (fila vacía)</span></a></li>
                             </ul>
                         </div>
                         
@@ -54,34 +56,38 @@
                 </div>
                 <div class="row mirror-rows my-2"></div>
         </div>
-       
-        
     </div>
 
     <template id="squareRow">
-        <div class="mirror-row row square-row">
+        <div class="mirror-row row square-row" data-row="square">
             <div class="col">
-                <hr/>
                 <div class="row mb-1 align-items-center">
                     <div class="col-10"><strong>Fila #<span class="row-number"></span> - Cuadradas</strong> <span class="units">En mm</span></div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
-                
-                <div class="row align-items-center">
-                    <label class="form-label col-8">Separación (mm)</label>
-                    <div class="col-4">
-                        <input type="number" placeholder="5" class="form-control separation" value="5"></input>
+                <div class="row align-items-center my-2">
+                    <div class="col-4 d-flex length-input size" data-min="1" data-max="50" data-value="20">
+                        <div class="length-label">Alto/Ancho (mm)</div>
+                        <div class="length-control">
+                            <div class="length-value">20</div>
+                            <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                        </div>
                     </div>
-                </div>
-                <div class="row align-items-center">
-                    <label class="form-label col-8">Alto/Ancho</label>
-                    <div class="col-4">
-                        <input type="number" placeholder="20" class="form-control size" value="20"></input>
+                    <div class="col-4 d-flex length-input gap" data-min="1" data-max="15" data-value="5">
+                        <div class="length-label">Separación (mm)</div>
+                        <div class="length-control">
+                            <div class="length-value">5</div>
+                            <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                        </div>
                     </div>
                 </div>
                 <h4>Patrón</h4>
                 <div class="pattern">
-                    <input type="color" class="form-control form-control-color" value="#68594a">
+                    <div class="colors">
+                        <input type="color" class="form-control form-control-color" value="#68594a">
+                    </div>
                     <button class="btn btn-mosaicit add-color"><i class="bi bi-plus-circle"></i></button>
                     <button class="btn btn-mosaicit remove-color"><i class="bi bi-trash"></i></button>
                 </div>
@@ -91,31 +97,43 @@
     </template>
 
     <template id="rectangleRow">
-        <div class="mirror-row row rectangle-row">
+        <div class="mirror-row row rectangle-row" data-row="rectangle">
             <div class="col">
-                <hr/>
                 <div class="row mb-1 align-items-center">
                     <div class="col-10"><strong>Fila #<span class="row-number"></span> - Rectangulares</strong> <span class="units">En mm</span></div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
-                
-                <div class="row align-items-center">
-                    <label class="form-label col-1">Sep</label>
-                    <div class="col-3">
-                        <input type="number" placeholder="5" class="form-control separation" value="5"></input>
+                <div class="row align-items-center my-2">
+                    <div class="col-4 d-flex length-input height" data-min="1" data-max="50" data-value="30">
+                        <div class="length-label">Alto (mm)</div>
+                        <div class="length-control">
+                            <div class="length-value">30</div>
+                            <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                        </div>
                     </div>
-                    <label class="form-label col-1">Alto</label>
-                    <div class="col-3">
-                        <input type="number" placeholder="20" class="form-control size" value="20"></input>
+                    <div class="col-4 d-flex length-input width" data-min="1" data-max="50" data-value="10">
+                        <div class="length-label">Ancho (mm)</div>
+                        <div class="length-control">
+                            <div class="length-value">10</div>
+                            <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                        </div>
                     </div>
-                    <label class="form-label col-1">Ancho</label>
-                    <div class="col-3">
-                        <input type="number" placeholder="40" class="form-control size" value="40"></input>
+                    <div class="col-4 d-flex length-input gap" data-min="1" data-max="15" data-value="5">
+                        <div class="length-label">Separación (mm)</div>
+                        <div class="length-control">
+                            <div class="length-value">5</div>
+                            <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                        </div>
                     </div>
                 </div>
                 <h4>Patrón</h4>
                 <div class="pattern">
-                    <input type="color" class="form-control form-control-color" value="#68594a">
+                    <div class="colors">
+                        <input type="color" class="form-control form-control-color" value="#68594a">
+                    </div>
                     <button class="btn btn-mosaicit add-color"><i class="bi bi-plus-circle"></i></button>
                     <button class="btn btn-mosaicit remove-color"><i class="bi bi-trash"></i></button>
                 </div>
@@ -125,31 +143,63 @@
     </template>
 
     <template id="circleRow">
-        <div class="mirror-row row circle-row">
+        <div class="mirror-row row circle-row" data-row="circle">
             <div class="col">
-                <hr/>
                 <div class="row mb-1 align-items-center">
                     <div class="col-10"><strong>Fila #<span class="row-number"></span> - Ciruclares</strong> <span class="units">En mm</span></div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
-                
                 <div class="row align-items-center">
-                    <label class="form-label col-8">Separación (mm)</label>
-                    <div class="col-4">
-                        <input type="number" placeholder="5" class="form-control separation" value="5"></input>
-                    </div>
-                </div>
-                <div class="row align-items-center">
-                    <label class="form-label col-8">Radio</label>
-                    <div class="col-4">
-                        <input type="number" placeholder="20" class="form-control size" value="20"></input>
+                    <div class="row align-items-center my-2">
+                        <div class="col-4 d-flex length-input diameter" data-min="1" data-max="50" data-value="20">
+                            <div class="length-label">Diámetro (mm)</div>
+                            <div class="length-control">
+                                <div class="length-value">20</div>
+                                <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                                <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-4 d-flex length-input gap" data-min="1" data-max="15" data-value="5">
+                            <div class="length-label">Separación (mm)</div>
+                            <div class="length-control">
+                                <div class="length-value">5</div>
+                                <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                                <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <h4>Patrón</h4>
                 <div class="pattern">
-                    <input type="color" class="form-control form-control-color" value="#68594a">
+                    <div class="colors">
+                        <input type="color" class="form-control form-control-color" value="#68594a">
+                    </div>
                     <button class="btn btn-mosaicit add-color"><i class="bi bi-plus-circle"></i></button>
                     <button class="btn btn-mosaicit remove-color"><i class="bi bi-trash"></i></button>
+                </div>
+                <hr/>
+            </div>
+        </div>
+    </template>
+
+    <template id="gapRow">
+        <div class="mirror-row row gap-row" data-row="gap">
+            <div class="col">
+                <div class="row mb-1 align-items-center">
+                    <div class="col-10"><strong>Fila #<span class="row-number"></span> - Vacío</strong> <span class="units">En mm</span></div>
+                    <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="row align-items-center my-2">
+                        <div class="col-6 d-flex length-input gap" data-min="1" data-max="50" data-value="20">
+                            <div class="length-label">Ancho (mm)</div>
+                            <div class="length-control">
+                                <div class="length-value">20</div>
+                                <button class="btn btn-mosaicit length-input-control" data-step="1"><i class="bi bi-plus"></i></button>
+                                <button class="btn btn-mosaicit length-input-control" data-step="-1"><i class="bi bi-dash"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <hr/>
             </div>
@@ -159,7 +209,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js" integrity="sha512-CeIsOAsgJnmevfCi2C7Zsyy6bQKi43utIjdA87Q0ZY84oDqnI0uwfM9+bKiIkI75lUeI00WG/+uJzOmuHlesMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./mirror-designer.js"></script>
 </body>
