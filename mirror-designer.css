@@ -106,11 +106,6 @@ h4 {
     margin: 0 5px;
 }
 
-span.units {
-    font-size: 11px;
-    color: #9e8974;
-}
-
 .mirror-row hr {
     margin: 5px 0;
 }
@@ -151,4 +146,11 @@ span.units {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (max-width: 991px) { 
+    .length-input .length-input-control {
+        height: 25px;
+        width: 25px;
+    }
 }

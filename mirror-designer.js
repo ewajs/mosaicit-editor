@@ -11,7 +11,6 @@ canvas.setWidth(availableWidth);
 let totalRows = 0;
 
 // Global Sort
-
 Sortable.create(rowParent, {
     handle: '.row-handle',
     onEnd: () => {
@@ -19,6 +18,49 @@ Sortable.create(rowParent, {
         document.dispatchEvent(new Event('mirror_changed'))
     }
 });
+
+// Share
+// Share Button 
+document.getElementById('share').addEventListener('click', () => {
+    // If device has sharing enabled, we trigger native share
+    if (navigator.canShare) {
+        const blob = dataURItoBlob(canvas.toDataURL());
+        navigator.share({
+            files: [new File([blob], "mosaicit.png", {type: blob.type,})],
+        });        
+        return;
+    }
+
+    var link = document.createElement('a');
+    link.download = 'mosaicit.jpeg';
+    link.href = canvas.toDataURL();
+    link.click();
+})
+
+function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+  
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+  
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+  
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+  
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], {type: mimeString});
+    return blob;
+  
+  }
 
 function configureLengthInput(el) {
     const lengthValue = el.querySelector('.length-value');
