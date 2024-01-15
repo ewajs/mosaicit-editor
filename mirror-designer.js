@@ -133,6 +133,7 @@ function getMirrorData() {
 
 function draw(mirrorData) {
     canvas.clear();
+    canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), 1)
     const { mirrorRadius, glueColor } = mirrorData;
     drawMirror(mirrorRadius);
     let currentRadius = mirrorRadius;
@@ -159,6 +160,9 @@ function draw(mirrorData) {
     }
     drawGlue(currentRadius, glueColor)
     // finally zoom out to make it enter perfectly on screen
+    const minorSide = Math.min(canvas.width, canvas.height);
+    if (currentRadius * 2 > minorSide) 
+        canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), minorSide / (currentRadius * 2))
 }
 
 function drawMirror(radius) {
