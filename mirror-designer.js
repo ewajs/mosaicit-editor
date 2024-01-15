@@ -130,8 +130,8 @@ function addRow(kind) {
         })
 
         newRow.querySelector('.remove-color').addEventListener('click', () => {
-            if(colorContainer.querySelectorAll('.form-control-color').length < 2) return; // Always leave 1 color
-            colorContainer.removeChild(colorContainer.querySelector(".form-control-color:last-child"));
+            if(colorsContainer.querySelectorAll('.color-container').length < 2) return; // Always leave 1 color
+            colorsContainer.removeChild(colorsContainer.querySelector(".color-container:last-child"));
             document.dispatchEvent(new Event('mirror_changed'))
         })
     }
