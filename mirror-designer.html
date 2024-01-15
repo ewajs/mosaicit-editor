@@ -11,8 +11,8 @@
 <body>
     <div class="container">
         <div class="row mt-3">
-            <div class="col-6 mirror-container"><canvas id="canvas"></canvas></div>
-            <div class="col-6">
+            <div class="col-md-6 mirror-container"><canvas id="canvas"></canvas></div>
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-8"><h2>Mosaic.it Designer</h2></div>
                     <div class="col-4">
@@ -62,7 +62,11 @@
         <div class="mirror-row row square-row" data-row="square">
             <div class="col">
                 <div class="row mb-1 align-items-center">
-                    <div class="col-10"><strong>Fila #<span class="row-number"></span> - Cuadradas</strong> <span class="units">En mm</span></div>
+                    <div class="col-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-vertical row-handle" viewBox="0 0 16 16">
+                            <path d="M8.354 14.854a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 13.293V2.707L6.354 3.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 2.707v10.586l1.146-1.147a.5.5 0 0 1 .708.708z"/>
+                        </svg>
+                        <strong>Fila #<span class="row-number"></span> - Cuadradas</strong> <span class="units">En mm</span></div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
                 <div class="row align-items-center my-2">
@@ -86,13 +90,18 @@
                 <h4>Patrón</h4>
                 <div class="pattern">
                     <div class="colors">
-                        <input type="color" class="form-control form-control-color" value="#68594a">
+                        <div class="color-container">
+                            <input type="color" class="form-control form-control-color" value="#68594a">
+                            <div class="color-handle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows" viewBox="0 0 16 16">
+                                    <path d="M1.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5h10.586l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L13.293 8.5H2.707l1.147 1.146a.5.5 0 0 1-.708.708z"/>
+                                </svg>
+                            </div>
+                        </div>                        
                     </div>
                     <button class="btn btn-mosaicit add-color"><i class="bi bi-plus-circle"></i></button>
                     <button class="btn btn-mosaicit remove-color"><i class="bi bi-trash"></i></button>
                 </div>
-                <hr/>
-            </div>
         </div>
     </template>
 
@@ -100,7 +109,12 @@
         <div class="mirror-row row rectangle-row" data-row="rectangle">
             <div class="col">
                 <div class="row mb-1 align-items-center">
-                    <div class="col-10"><strong>Fila #<span class="row-number"></span> - Rectangulares</strong> <span class="units">En mm</span></div>
+                    <div class="col-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-vertical row-handle" viewBox="0 0 16 16">
+                            <path d="M8.354 14.854a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 13.293V2.707L6.354 3.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 2.707v10.586l1.146-1.147a.5.5 0 0 1 .708.708z"/>
+                        </svg>
+                        <strong>Fila #<span class="row-number"></span> - Rectangulares</strong> <span class="units">En mm</span>
+                    </div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
                 <div class="row align-items-center my-2">
@@ -132,7 +146,14 @@
                 <h4>Patrón</h4>
                 <div class="pattern">
                     <div class="colors">
-                        <input type="color" class="form-control form-control-color" value="#68594a">
+                        <div class="color-container">
+                            <input type="color" class="form-control form-control-color" value="#68594a">
+                            <div class="color-handle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows" viewBox="0 0 16 16">
+                                    <path d="M1.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5h10.586l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L13.293 8.5H2.707l1.147 1.146a.5.5 0 0 1-.708.708z"/>
+                                </svg>
+                            </div>
+                        </div>    
                     </div>
                     <button class="btn btn-mosaicit add-color"><i class="bi bi-plus-circle"></i></button>
                     <button class="btn btn-mosaicit remove-color"><i class="bi bi-trash"></i></button>
@@ -146,7 +167,12 @@
         <div class="mirror-row row circle-row" data-row="circle">
             <div class="col">
                 <div class="row mb-1 align-items-center">
-                    <div class="col-10"><strong>Fila #<span class="row-number"></span> - Ciruclares</strong> <span class="units">En mm</span></div>
+                    <div class="col-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-vertical row-handle" viewBox="0 0 16 16">
+                            <path d="M8.354 14.854a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 13.293V2.707L6.354 3.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 2.707v10.586l1.146-1.147a.5.5 0 0 1 .708.708z"/>
+                        </svg>
+                        <strong>Fila #<span class="row-number"></span> - Ciruclares</strong> <span class="units">En mm</span>
+                    </div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
                 <div class="row align-items-center">
@@ -172,7 +198,14 @@
                 <h4>Patrón</h4>
                 <div class="pattern">
                     <div class="colors">
-                        <input type="color" class="form-control form-control-color" value="#68594a">
+                        <div class="color-container">
+                            <input type="color" class="form-control form-control-color" value="#68594a">
+                            <div class="color-handle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows" viewBox="0 0 16 16">
+                                    <path d="M1.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5h10.586l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L13.293 8.5H2.707l1.147 1.146a.5.5 0 0 1-.708.708z"/>
+                                </svg>
+                            </div>
+                        </div>    
                     </div>
                     <button class="btn btn-mosaicit add-color"><i class="bi bi-plus-circle"></i></button>
                     <button class="btn btn-mosaicit remove-color"><i class="bi bi-trash"></i></button>
@@ -186,7 +219,12 @@
         <div class="mirror-row row gap-row" data-row="gap">
             <div class="col">
                 <div class="row mb-1 align-items-center">
-                    <div class="col-10"><strong>Fila #<span class="row-number"></span> - Vacío</strong> <span class="units">En mm</span></div>
+                    <div class="col-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-vertical row-handle" viewBox="0 0 16 16">
+                            <path d="M8.354 14.854a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 13.293V2.707L6.354 3.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 2.707v10.586l1.146-1.147a.5.5 0 0 1 .708.708z"/>
+                        </svg>
+                        <strong>Fila #<span class="row-number"></span> - Vacío</strong> <span class="units">En mm</span>
+                    </div>
                     <div class="col-2 d-flex justify-content-end"><button class="btn btn-mosaicit remove-row"><i class="bi bi-trash"></i></button></div>
                 </div>
                 <div class="row align-items-center">

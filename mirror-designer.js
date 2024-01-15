@@ -2,12 +2,23 @@
 const canvas = new fabric.Canvas('canvas');
 const glueColorInput = document.querySelector('#glueColor');
 const mirrorDiameter = document.querySelector('.length-input.mirror-diameter');
+const rowParent = document.querySelector('.mirror-rows');
 // Subtract 10px margin on both sides
 const availableWidth = document.querySelector('.mirror-container').clientWidth - 20;
 canvas.setHeight(availableWidth);
 canvas.setWidth(availableWidth);
 
 let totalRows = 0;
+
+// Global Sort
+
+Sortable.create(rowParent, {
+    handle: '.row-handle',
+    onEnd: () => {
+        reindexRows();
+        document.dispatchEvent(new Event('mirror_changed'))
+    }
+});
 
 function configureLengthInput(el) {
     const lengthValue = el.querySelector('.length-value');
@@ -47,7 +58,6 @@ function reindexRows() {
 }
 
 function addRow(kind) {
-    const rowParent = document.querySelector('.mirror-rows');
     const newRow = document.getElementById(kind).content.cloneNode(true);
     // Set Row number
     const idx = totalRows + 1;
@@ -55,20 +65,25 @@ function addRow(kind) {
     newRow.querySelector('.row-number').innerText = idx;
     newRow.querySelectorAll('.length-input').forEach(configureLengthInput);
     newRow.querySelector('.remove-row').addEventListener('click', () => {
+        if(rowParent.querySelectorAll('.mirror-row').length < 2) return; // Always leave 1 color
         rowParent.removeChild(rowParent.querySelector(`.mirror-row[data-index="${idx}"]`));
         reindexRows();
+        document.dispatchEvent(new Event('mirror_changed'))
     });
     // Row might not have colorInput
-    const colorInput = newRow.querySelector('.pattern > .colors > .form-control-color')
-    if (colorInput) {
-        const colorContainer = colorInput.parentElement;
-        Sortable.create(colorContainer);
+    const colorsContainer = newRow.querySelector('.pattern > .colors')
+    if (colorsContainer) {
+        const colorInput = newRow.querySelector('.pattern > .colors > .color-container > .form-control-color')
+        Sortable.create(colorsContainer, {
+            handle: '.color-handle',
+            onEnd: () => document.dispatchEvent(new Event('mirror_changed'))
+        });
         configureColorInput(colorInput);
         // Now configure the add delete if this row allows colors
         newRow.querySelector('.add-color').addEventListener('click', () => {
-            const newColorInput = document.createElement('input');
-            configureColorInput(newColorInput);
-            colorContainer.appendChild(newColorInput);
+            const newColor = colorsContainer.querySelector('.color-container:first-child').cloneNode(true);
+            configureColorInput(newColor.querySelector('.form-control-color'));
+            colorsContainer.appendChild(newColor);
             document.dispatchEvent(new Event('mirror_changed'))
         })
 
@@ -93,7 +108,7 @@ function getMirrorData() {
     const rows = [];
     document.querySelectorAll(".mirror-rows > .mirror-row").forEach(r => {
         const pattern = [];
-        r.querySelectorAll('.pattern > .colors > .form-control-color').forEach(c => pattern.push(c.value));
+        r.querySelectorAll('.pattern > .colors .form-control-color').forEach(c => pattern.push(c.value));
         switch(r.dataset.row) {
             case "square":
                 rows.push({
@@ -163,6 +178,11 @@ function draw(mirrorData) {
     const minorSide = Math.min(canvas.width, canvas.height);
     if (currentRadius * 2 > minorSide) 
         canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), minorSide / (currentRadius * 2))
+}
+
+function update() {
+    console.log("Updating mirorr!")
+    draw(getMirrorData());
 }
 
 function drawMirror(radius) {
@@ -241,5 +261,5 @@ function drawCirclesRow(radius, pattern, gap, circleRadius) {
 
 // Init
 addRow('squareRow');
-draw(getMirrorData());
-document.addEventListener('mirror_changed', () => draw(getMirrorData()));
+update();
+document.addEventListener('mirror_changed', update);

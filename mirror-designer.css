@@ -72,18 +72,23 @@ h4 {
 
 .pattern {
     display: flex;
-    align-items: center;
 }
 
 .pattern > .colors {
     display: flex;
 }
 
-.pattern > .colors > .form-control.form-control-color {
+.pattern > .colors > .color-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.pattern > .colors > .color-container > .form-control.form-control-color {
     display: inline-block;
     height: 40px;
     width: 40px;
-    margin-right: 5px;
 }
 
 .btn.btn-mosaicit.remove-row,
